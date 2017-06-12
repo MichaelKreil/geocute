@@ -13,7 +13,7 @@ var config = [
 config.push({
 	default:true,
 	source:'./deutschland/deutschland.bin.gz',
-	ids: Array.apply([],config.map(c => c.ids))
+	ids: Array.prototype.concat.apply([],config.map(c => c.ids))
 })
 
 async.eachSeries(
@@ -22,10 +22,12 @@ async.eachSeries(
 		var pointList = PointList.load(entry.source);
 		var lookup = regionLookup.getRegionsLookup(entry.ids);
 		pointList.forEach(p => {
-			var isInside = lookup.inside(p.x, p.y);
+			var isInside = lookup.isInside(p.x, p.y);
 			var use = entry.default ? !isInside : isInside;
 			if (use) result.add(p.x,p.y,p.v);
 		})
+		console.log(result.getLength());
+		cbConfig();
 	},
 	saveData
 );

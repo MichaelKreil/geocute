@@ -12,8 +12,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@turf/flatten": "^4.4.0",
     "async": "^2.4.1",
     "progress": "^2.0.0",
-    "progress-stream": "^2.0.0"
+    "progress-stream": "^2.0.0",
+    "turf": "^3.0.14"
   }
 }

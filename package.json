@@ -1,0 +1,19 @@
+{
+  "name": "geocute",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "geocute": "compress.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.4.1",
+    "progress": "^2.0.0",
+    "progress-stream": "^2.0.0"
+  }
+}

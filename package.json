@@ -1,16 +1,15 @@
 {
   "name": "geocute",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "GEO Conversion Using Telephone book Entries",
   "bin": {
-    "geocute": "compress.js"
+    "cutematrix": "bin/cutematrix.js"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "author": {
+    "name": "Michael Kreil",
+    "url" : "http://dsst.io"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@turf/bbox-clip": "^4.4.0",
     "@turf/flatten": "^4.4.0",

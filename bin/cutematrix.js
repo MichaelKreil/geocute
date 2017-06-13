@@ -1,12 +1,16 @@
+#! /usr/bin/env node
+
 "use strict"
 
 const fs = require('fs');
-const path = require('path');
+const Path = require('path');
 const ProgressBar = require('progress');
 const PointList = require('../lib/point_list.js');
 const RegionLookup = require('../lib/region_lookup.js');
 
 const minResidents = 100;
+
+
 
 var args = process.argv.slice(2);
 
@@ -25,12 +29,6 @@ if (args.length !== 5) {
 	process.exit();
 }
 
-//var filename1 = 'kreise.geojson';
-//var key1 = 'RS';
-//var filename2 = 'wahlkreise_btw17.geojson';
-//var key2 = 'WKR_NR';
-//var filenameOut = 'matrix.tsv';
-
 var filename1   = args[0];
 var key1        = args[1];
 var filename2   = args[2];
@@ -40,7 +38,7 @@ var filenameOut = args[4];
 
 
 console.log('load points');
-var points = PointList.load(path.resolve(__dirname, '../data/deutschland.bin.gz'));
+var points = PointList.load(Path.resolve(__dirname, '../data/deutschland.bin.gz'));
 
 
 

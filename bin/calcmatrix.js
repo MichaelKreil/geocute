@@ -16,16 +16,18 @@ console.log('load points');
 
 var points = PointList.load('../data/deutschland.bin.gz');
 
-console.log('load regions');
-
+console.log('load regions "'+filename1+'"');
 var geo1 = new RegionLookup(filename1);
+
+console.log('load regions "'+filename2+'"');
 var geo2 = new RegionLookup(filename2);
 
 var minResidents = 100;
 
-console.log('generate lookups');
-
+console.log('generate lookups "'+filename1+'"');
 var lookup1 = geo1.getLookup();
+
+console.log('generate lookups "'+filename2+'"');
 var lookup2 = geo2.getLookup();
 
 var missSum1 = 0, missSum2 = 0, sum = 0, ignoredSum = 0;
@@ -53,7 +55,7 @@ points.forEach((p,i) => {
 }, () => {
 	console.log('\n');
 
-	console.log('calc results');
+	console.log('save results');
 
 	hits = Array.from(hits.values());
 	hits = hits.filter(hit => {
@@ -65,9 +67,9 @@ points.forEach((p,i) => {
 		return true;
 	})
 
-	console.log('misses in geo 1: '+(100*missSum1/sum).toFixed(3)+'%');
-	console.log('misses in geo 2: '+(100*missSum2/sum).toFixed(3)+'%');
-	console.log('ignored residents: '+(100*missSum2/sum).toFixed(3)+'%');
+	console.log('- misses in geo 1: '+(100*missSum1/sum).toFixed(3)+'%');
+	console.log('- misses in geo 2: '+(100*missSum2/sum).toFixed(3)+'%');
+	console.log('- ignored residents: '+(100*missSum2/sum).toFixed(3)+'%');
 
 	hits = hits.map(hit =>
 		[

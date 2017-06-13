@@ -1,20 +1,48 @@
 "use strict"
 
 const fs = require('fs');
+const path = require('path');
 const ProgressBar = require('progress');
 const PointList = require('../lib/point_list.js');
 const RegionLookup = require('../lib/region_lookup.js');
 
-var filename1 = 'kreise.geojson';
-var filename2 = 'wahlkreise_btw17.geojson';
-var key1 = 'RS';
-var key2 = 'WKR_NR';
+const minResidents = 100;
 
-var filenameOut = 'matrix.tsv';
+var args = process.argv.slice(2);
+
+if (args.length !== 5) {
+	console.error('Wrong number of arguments! I need exactly 5');
+	console.error('Usage:');
+	console.error('  cutematrix geo1 key1 geo2 key2 output');
+	console.error('    - geo1: filename of source GeoJSON');
+	console.error('    - key1: property name of the key in source GeoJSON');
+	console.error('    - geo2: filename of target GeoJSON');
+	console.error('    - key2: property name of the key in target GeoJSON');
+	console.error('    - output: filename of resulting TSV file');
+	console.error('Example:');
+	console.error('  If you want to calculate a matrix for conversion from "gemeinden" to "wahlkreise", use:');
+	console.error('     cutematrix gemeinden.geojson AGS wahlkreise.geojson wkr_nr matrix.tsv');
+	process.exit();
+}
+
+//var filename1 = 'kreise.geojson';
+//var key1 = 'RS';
+//var filename2 = 'wahlkreise_btw17.geojson';
+//var key2 = 'WKR_NR';
+//var filenameOut = 'matrix.tsv';
+
+var filename1   = args[0];
+var key1        = args[1];
+var filename2   = args[2];
+var key2        = args[3];
+var filenameOut = args[4];
+
+
 
 console.log('load points');
+var points = PointList.load(path.resolve(__dirname, '../data/deutschland.bin.gz'));
 
-var points = PointList.load('../data/deutschland.bin.gz');
+
 
 console.log('load regions "'+filename1+'"');
 var geo1 = new RegionLookup(filename1);
@@ -22,7 +50,7 @@ var geo1 = new RegionLookup(filename1);
 console.log('load regions "'+filename2+'"');
 var geo2 = new RegionLookup(filename2);
 
-var minResidents = 100;
+
 
 console.log('generate lookups "'+filename1+'"');
 var lookup1 = geo1.getLookup();
@@ -30,11 +58,12 @@ var lookup1 = geo1.getLookup();
 console.log('generate lookups "'+filename2+'"');
 var lookup2 = geo2.getLookup();
 
-var missSum1 = 0, missSum2 = 0, sum = 0, ignoredSum = 0;
-var hits = new Map();
+
 
 console.log('fire points');
 
+var missSum1 = 0, missSum2 = 0, sum = 0, ignoredSum = 0;
+var hits = new Map();
 var count = points.getLength();
 var bar = new ProgressBar(':bar :percent (ETA :etas)', { total:100 });
 

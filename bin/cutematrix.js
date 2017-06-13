@@ -24,7 +24,7 @@ if (args.length !== 5) {
 	console.error('    - key2: property name of the key in target GeoJSON');
 	console.error('    - output: filename of resulting TSV file');
 	console.error('Example:');
-	console.error('  If you want to calculate a matrix for conversion from "gemeinden" to "wahlkreise", use:');
+	console.error('  If you want to calculate a matrix for converting from "gemeinden" to "wahlkreise", use:');
 	console.error('     cutematrix gemeinden.geojson AGS wahlkreise.geojson wkr_nr matrix.tsv');
 	process.exit();
 }

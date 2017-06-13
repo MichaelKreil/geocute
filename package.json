@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@turf/bbox-clip": "^4.4.0",
     "@turf/flatten": "^4.4.0",
     "async": "^2.4.1",
     "progress": "^2.0.0",

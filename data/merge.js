@@ -24,11 +24,11 @@ async.eachSeries(
 		var pointList = PointList.load(entry.source);
 		var lookup = regionLookup.getInsideChecker(entry.ids, 'GEN');
 		pointList.forEach(p => {
-			var isInside = lookup.isInside(p.x, p.y);
+			var isInside = lookup(p.x, p.y);
 			var use = entry.default ? !isInside : isInside;
 			if (use) result.add(p.x,p.y,p.v);
 		})
-		
+
 		cbConfig();
 	},
 	saveData

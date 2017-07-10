@@ -1,9 +1,9 @@
 "use strict"
 
-const tsv = require('../../lib/tsv.js');
+const tsv = require('../lib/tsv.js');
 const async = require('async');
 
-var pointList = new require('../../lib/point_list.js')();
+var pointList = new require('../lib/point_list.js')();
 var blocks = new Map();
 
 async.series([
@@ -15,7 +15,7 @@ async.series([
 function loadBLKData(cb) {
 	console.log('load "statistische Blöcke"');
 	tsv.load(
-		'blk.tsv.gz',
+		'sources/berlin_blk.tsv.gz',
 		['integer', 'float'],
 		entry => blocks.set(entry[0], {addr:[], population:entry[1]}),
 		cb
@@ -25,7 +25,7 @@ function loadBLKData(cb) {
 function loadADRPoints(cb) {
 	console.log('load "Adressen"');
 	tsv.load(
-		'adr.tsv.gz',
+		'sources/berlin_adr.tsv.gz',
 		['integer', 'float', 'float'],
 		entry => {
 			if (blocks.has(entry[0])) blocks.get(entry[0]).addr.push(entry)

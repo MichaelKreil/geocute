@@ -5,14 +5,14 @@ const PointList = require('../lib/point_list.js');
 const RegionLookup = require('../lib/region_lookup.js');
 
 var result = new PointList();
-var regionLookup = new RegionLookup('./merge/bundeslaender.geojson');
+var regionLookup = new RegionLookup('sources/bundeslaender.geojson.gz');
 
 var config = [
-	{ids:['Berlin'], source:'./berlin/berlin.bin.gz'}
+	{ids:['Berlin'], source:'berlin.bin.gz'}
 ]
 config.push({
 	default:true,
-	source:'./deutschland/deutschland.bin.gz',
+	source:'deutschland1.bin.gz',
 	ids: Array.prototype.concat.apply([],config.map(c => c.ids))
 })
 
@@ -35,6 +35,6 @@ async.eachSeries(
 );
 
 function saveData() {
-	console.log('save deutschland.bin.gz');
-	result.save('deutschland.bin.gz');
+	console.log('save deutschland2.bin.gz');
+	result.save('deutschland2.bin.gz');
 }

@@ -1,34 +1,58 @@
 "use strict"
 
-const tsv = require('../../lib/tsv.js');
+const tsv = require('../lib/tsv.js');
+const PointLookup = require('../lib/point_lookup.js');
+const RegionLookup = require('../lib/region_lookup.js');
 const async = require('async');
 
-var pointLookup = new require('../../lib/point_lookup.js')();
+var pointLookup = new PointLookup();
+var isInBerlin;
 var lonelyGridPoints = [];
 
 async.series([
+	loadBerlinLookup,
+	loadBerlinPoints,
 	loadGermanyPoints,
-	loadCensusPoints,
+	loadCensusGrid,
 	saveData
 ]);
+
+function loadBerlinLookup(cb) {
+	console.log('load berlin lookup');
+	var regionLookup = new RegionLookup('sources/bundeslaender.geojson.gz');
+	isInBerlin = regionLookup.getInsideChecker(['Berlin'], 'GEN');
+	cb();
+}
 
 function loadGermanyPoints(cb) {
 	console.log('load deutschland_points');
 	tsv.load(
-		'deutschland_points.tsv.gz',
+		'sources/deutschland_points.tsv.gz',
 		['float', 'float'],
 		point => {
-			pointLookup.add(point[0], point[1], 0);
+			if (!isInBerlin(point[0], point[1])) pointLookup.add(point[0], point[1], 0)
 		},
 		cb
 	)
 }
 
-function loadCensusPoints(cb) {
+function loadBerlinPoints(cb) {
+	console.log('load berlin_adr');
+	tsv.load(
+		'sources/berlin_adr.tsv.gz',
+		['integer', 'float', 'float'],
+		point => {
+			if (isInBerlin(point[1], point[2])) pointLookup.add(point[1], point[2], 0)
+		},
+		cb
+	)
+}
+
+function loadCensusGrid(cb) {
 	console.log('load zensus_grid');
 
 	tsv.load(
-		'zensus_grid.tsv.gz',
+		'sources/zensus_grid.tsv.gz',
 		['float', 'float', 'integer'],
 		gridPoint => {
 			var points = pointLookup.findNearby(gridPoint[0], gridPoint[1], 300);
@@ -56,7 +80,7 @@ function saveData() {
 
 	lonelyGridPoints.forEach(point => pointLookup.add(point[0], point[1], point[2]));
 
-	pointLookup.save('deutschland.bin.gz');
+	pointLookup.save('deutschland1.bin.gz');
 
 	console.log('finished');
 }

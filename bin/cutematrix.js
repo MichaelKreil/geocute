@@ -38,7 +38,7 @@ var filenameOut = args[4];
 
 
 console.log('load points');
-var points = PointList.load(Path.resolve(__dirname, '../data/deutschland.bin.gz'));
+var points = PointList.load(Path.resolve(__dirname, '../data/deutschland1.bin.gz'));
 
 
 

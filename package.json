@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "GEO Conversion Using Telephone book Entries",
   "bin": {
-    "cutematrix": "bin/cutematrix.js"
+    "geocute": "bin/geocute.js"
   },
   "author": {
     "name": "Michael Kreil",
-    "url" : "http://dsst.io"
+    "url": "http://dsst.io"
   },
   "license": "MIT",
   "dependencies": {

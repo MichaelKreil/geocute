@@ -8,7 +8,7 @@ const ProgressBar = require('progress');
 const PointList = require('../lib/point_list.js');
 const RegionLookup = require('../lib/region_lookup.js');
 
-const minResidents = 100;
+const minResidents = 10;
 
 
 
@@ -81,6 +81,7 @@ points.forEach((p,i) => {
 	hits.get(key).v += p.v;
 }, () => {
 	console.log('\n');
+	//process.exit();
 
 	console.log('save results');
 

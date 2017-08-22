@@ -25,7 +25,7 @@ function loadBerlinLookup(cb) {
 }
 
 function loadGermanyPoints(cb) {
-	console.log('load deutschland_points');
+	console.log('\nload deutschland_points.tsv');
 	tsv.load(
 		'sources/deutschland_points.tsv.gz',
 		['float', 'float'],
@@ -37,7 +37,7 @@ function loadGermanyPoints(cb) {
 }
 
 function loadBerlinPoints(cb) {
-	console.log('load berlin_adr');
+	console.log('\nload berlin_adr.tsv');
 	tsv.load(
 		'sources/berlin_adr.tsv.gz',
 		['integer', 'float', 'float'],
@@ -49,7 +49,7 @@ function loadBerlinPoints(cb) {
 }
 
 function loadCensusGrid(cb) {
-	console.log('load zensus_grid');
+	console.log('\nload zensus_grid.tsv');
 
 	tsv.load(
 		'sources/zensus_grid.tsv.gz',

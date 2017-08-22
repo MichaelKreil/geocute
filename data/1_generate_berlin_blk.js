@@ -13,7 +13,7 @@ async.series([
 ]);
 
 function loadBLKData(cb) {
-	console.log('load "statistische Blöcke"');
+	console.log('load "statistische Blöcke" berlin_blk.tsv.gz');
 	tsv.load(
 		'sources/berlin_blk.tsv.gz',
 		['integer', 'float'],
@@ -23,7 +23,7 @@ function loadBLKData(cb) {
 }
 
 function loadADRPoints(cb) {
-	console.log('load "Adressen"');
+	console.log('\nload "Adressen" berlin_adr.tsv.gz');
 	tsv.load(
 		'sources/berlin_adr.tsv.gz',
 		['integer', 'float', 'float'],
@@ -35,7 +35,7 @@ function loadADRPoints(cb) {
 }
 
 function saveData() {
-	console.log('calc population per addresse');
+	console.log('\ncalc population per addresse');
 
 	var addresses = [];
 	blocks = Array.from(blocks.values());
@@ -48,7 +48,7 @@ function saveData() {
 		})
 	})
 
-	console.log('save "berlin_blk.bin.gz"');
+	console.log('\nsave "berlin_blk.bin.gz"');
 
 	pointList.save('berlin_blk.bin.gz');
 }

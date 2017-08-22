@@ -80,7 +80,7 @@ function saveData() {
 
 	lonelyGridPoints.forEach(point => pointLookup.add(point[0], point[1], point[2]));
 
-	pointLookup.save('deutschland1.bin.gz');
+	pointLookup.save('deutschland.bin.gz');
 
 	console.log('finished');
 }

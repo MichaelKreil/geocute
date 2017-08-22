@@ -48,7 +48,7 @@ function saveData() {
 		})
 	})
 
-	console.log('save "berlin.bin.gz"');
+	console.log('save "berlin_blk.bin.gz"');
 
-	pointList.save('berlin.bin.gz');
+	pointList.save('berlin_blk.bin.gz');
 }

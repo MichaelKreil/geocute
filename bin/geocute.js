@@ -62,10 +62,10 @@ var geo2 = new RegionLookup(filename2);
 
 
 console.log('generate lookups "'+filename1+'"');
-var lookup1 = geo1.getLookup();
+var lookup1 = geo1.getLookup(true);
 
 console.log('generate lookups "'+filename2+'"');
-var lookup2 = geo2.getLookup();
+var lookup2 = geo2.getLookup(true);
 
 
 
@@ -87,7 +87,7 @@ points.forEach((p,i) => {
 	if (!region2) missSum2 += p.v;
 	if (!region1 || !region2) return;
 
-	var key = region1.index+'_'+region2.index;
+	var key = region1.properties._index+'_'+region2.properties._index;
 	if (!hits.has(key)) hits.set(key, {r1:region1, r2:region2, v:0});
 	hits.get(key).v += p.v;
 }, () => {
@@ -103,7 +103,7 @@ points.forEach((p,i) => {
 			ignoredSum += hit.v;
 			return false;
 		}
-		hit.r1.count = (hit.r1.count || 0) + hit.v;
+		hit.r1.properties._count = (hit.r1.properties._count || 0) + hit.v;
 		return true;
 	})
 
@@ -115,7 +115,7 @@ points.forEach((p,i) => {
 		[
 			hit.r1.properties[key1],
 			hit.r2.properties[key2],
-			(hit.v/hit.r1.count).toFixed(6),
+			(hit.v/hit.r1.properties._count).toFixed(6),
 			hit.v.toFixed(1)
 		].join('\t')
 	)

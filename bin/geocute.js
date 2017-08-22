@@ -14,31 +14,42 @@ const minResidents = 10;
 
 var args = process.argv.slice(2);
 
-if (args.length !== 5) {
-	console.error('Wrong number of arguments! I need exactly 5');
+if ((args.length < 5) || (args.length > 6)) {
+	console.error('Wrong number of arguments! I need 5-6');
 	console.error('Usage:');
-	console.error('  cutematrix geo1 key1 geo2 key2 output');
+	console.error('  geocute geo1 key1 geo2 key2 [pointlist] output');
 	console.error('    - geo1: filename of source GeoJSON');
 	console.error('    - key1: property name of the key in source GeoJSON');
 	console.error('    - geo2: filename of target GeoJSON');
 	console.error('    - key2: property name of the key in target GeoJSON');
+	console.error('    - pointlist: (optional) name of list of points to through at the data. Can be:');
+	console.error('      - "../data/deutschland.bin.gz": (default) based on telephone book entries');
+	console.error('      - "../data/berlin_blk.bin.gz": Berlin only, based on "statistische Blöcke"');
+	console.error('      - "../data/berlin_adr.bin.gz": Berlin only, based on "Sonderauswertung RBS-Adressen"');
 	console.error('    - output: filename of resulting TSV file');
-	console.error('Example:');
-	console.error('  If you want to calculate a matrix for converting from "gemeinden" to "wahlkreise", use:');
-	console.error('     cutematrix gemeinden.geojson AGS wahlkreise.geojson wkr_nr matrix.tsv');
+	console.error('Examples:');
+	console.error('  If you want to calculate a matrix for converting from "gemeinden" to "wahlkreise", type:');
+	console.error('     node geocute gemeinden.geojson AGS wahlkreise.geojson wkr_nr matrix.tsv');
+	console.error('  If you want to convert from "wahlbezirk" to "plz" using "Sonderauswertung RBS-Adressen", type:');
+	console.error('     node geocute wahlbezirk.geojson WBZ plz.geojson plz ../data/berlin_adr.bin.gz matrix.tsv');
 	process.exit();
 }
 
-var filename1   = args[0];
-var key1        = args[1];
-var filename2   = args[2];
-var key2        = args[3];
-var filenameOut = args[4];
+var pointListFilename = '../data/deutschland.bin.gz';
+
+var filename1   = args.shift();
+var key1        = args.shift();
+var filename2   = args.shift();
+var key2        = args.shift();
+
+if (args.length > 1) pointListFilename = args.shift();
+
+var filenameOut = args.shift();
 
 
 
 console.log('load points');
-var points = PointList.load(Path.resolve(__dirname, '../data/deutschland1.bin.gz'));
+var points = PointList.load(Path.resolve(__dirname, pointListFilename));
 
 
 

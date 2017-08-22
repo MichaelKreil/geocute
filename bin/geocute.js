@@ -25,7 +25,7 @@ if ((args.length < 5) || (args.length > 6)) {
 	console.error('    - pointlist: (optional) name of list of points to through at the data. Can be:');
 	console.error('      - "../data/deutschland.bin.gz": (default) based on telephone book entries');
 	console.error('      - "../data/berlin_blk.bin.gz": Berlin only, based on "statistische Blöcke"');
-	console.error('      - "../data/berlin_adr.bin.gz": Berlin only, based on "Sonderauswertung RBS-Adressen"');
+	console.error('      - "../data/berlin_adr_ew.bin.gz": Berlin only, based on "Sonderauswertung RBS-Adressen"');
 	console.error('    - output: filename of resulting TSV file');
 	console.error('Examples:');
 	console.error('  If you want to calculate a matrix for converting from "gemeinden" to "wahlkreise", type:');

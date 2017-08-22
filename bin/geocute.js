@@ -74,7 +74,7 @@ console.log('fire points');
 var missSum1 = 0, missSum2 = 0, sum = 0, ignoredSum = 0;
 var hits = new Map();
 var count = points.getLength();
-var bar = new ProgressBar(':bar :percent (ETA :etas)', { total:100 });
+var bar = new ProgressBar('   [:bar] :percent (ETA :etas)', { total:50 });
 
 points.forEach((p,i) => {
 	if (i % 100000 === 0) bar.update(i/count);
@@ -91,8 +91,9 @@ points.forEach((p,i) => {
 	if (!hits.has(key)) hits.set(key, {r1:region1, r2:region2, v:0});
 	hits.get(key).v += p.v;
 }, () => {
+	bar.update(1);
+
 	console.log('\n');
-	//process.exit();
 
 	console.log('save results');
 
@@ -121,4 +122,4 @@ points.forEach((p,i) => {
 	hits.unshift('key1_'+key1+'\tkey2_'+key2+'\tfraction\tresidents');
 
 	fs.writeFileSync(filenameOut, hits.join('\n'), 'utf8')
-});
+})

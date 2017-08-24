@@ -90,6 +90,7 @@ points.forEach((p,i) => {
 	var key = region1.properties._index+'_'+region2.properties._index;
 	if (!hits.has(key)) hits.set(key, {r1:region1, r2:region2, v:0});
 	hits.get(key).v += p.v;
+
 }, () => {
 	bar.update(1);
 
@@ -104,6 +105,8 @@ points.forEach((p,i) => {
 			return false;
 		}
 		hit.r1.properties._count = (hit.r1.properties._count || 0) + hit.v;
+		hit.r2.properties._count = (hit.r2.properties._count || 0) + hit.v;
+
 		return true;
 	})
 
@@ -111,15 +114,19 @@ points.forEach((p,i) => {
 	console.log('- misses in geo 2: '+(100*missSum2/sum).toFixed(3)+'%');
 	console.log('- ignored residents: '+(100*missSum2/sum).toFixed(3)+'%');
 
-	hits = hits.map(hit =>
-		[
+	hits = hits.map(hit => {
+		var fraction = hit.v/hit.r1.properties._count;
+		var error = fraction*(1-fraction);
+		error = error*hit.v/hit.r2.properties._count;
+		return [
 			hit.r1.properties[key1],
 			hit.r2.properties[key2],
-			(hit.v/hit.r1.properties._count).toFixed(6),
-			hit.v.toFixed(1)
+			fraction.toFixed(6),
+			hit.v.toFixed(1),
+			error.toFixed(6)
 		].join('\t')
-	)
-	hits.unshift('key1_'+key1+'\tkey2_'+key2+'\tfraction\tresidents');
+	})
+	hits.unshift('key1_'+key1+'\tkey2_'+key2+'\tfraction\tresidents\terror');
 
 	fs.writeFileSync(filenameOut, hits.join('\n'), 'utf8')
 })

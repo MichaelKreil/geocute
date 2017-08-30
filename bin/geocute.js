@@ -116,7 +116,7 @@ points.forEach((p,i) => {
 			fraction: fraction,
 			residents: hit.v,
 			error: error,
-			measurement: 'point'
+			method: 'point'
 		}
 	})
 
@@ -162,7 +162,7 @@ points.forEach((p,i) => {
 				fraction: overlap.fraction,
 				residents: 0,
 				error: 1,
-				measurement: 'overlapping area'
+				method: 'overlapping area'
 			}))
 		})
 	}
@@ -178,9 +178,9 @@ points.forEach((p,i) => {
 		hit.fraction.toFixed(6),
 		hit.residents.toFixed(1),
 		hit.error.toFixed(6),
-		hit.measurement
+		hit.method
 	].join('\t'))
-	hits.unshift('key1_'+key1+'\tkey2_'+key2+'\tfraction\tresidents\terror\tmeasurement');
+	hits.unshift('key1_'+key1+'\tkey2_'+key2+'\tfraction\tresidents\terror\tmethod');
 
 	fs.writeFileSync(filenameOut, hits.join('\n'), 'utf8')
 })

@@ -166,7 +166,11 @@ points.forEach((p,i) => {
 			}))
 		})
 	}
-	if (features2.length) console.log('CAN\'T FIX IT, THAT THERE IS NO HITS IN GEO2!!')
+	if (features2.length) {
+		console.log('CAN\'T FIX IT, THAT THERE IS NO HITS IN GEO2!!')
+		console.log('   - saving that as "_nohits.geojson"');
+		fs.writeFileSync('_nohits.geojson', JSON.stringify({type:'FeatureCollection',features:features2}), 'utf8');
+	}
 
 
 

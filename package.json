@@ -13,6 +13,7 @@
   "dependencies": {
     "@turf/turf": "^4.6.1",
     "async": "^2.4.1",
+    "colors": "^1.1.2",
     "progress": "^2.0.0",
     "progress-stream": "^2.0.0"
   }

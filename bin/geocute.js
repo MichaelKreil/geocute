@@ -4,6 +4,7 @@
 
 const fs = require('fs');
 const Path = require('path');
+const colors = require('colors');
 const ProgressBar = require('progress');
 const PointList = require('../lib/point_list.js');
 const RegionLookup = require('../lib/region_lookup.js');
@@ -15,7 +16,7 @@ const minResidents = 10;
 var args = process.argv.slice(2);
 
 if ((args.length < 5) || (args.length > 6)) {
-	console.error('Wrong number of arguments! I need 5-6');
+	console.error('Wrong number of arguments! I need 5-6'.yellow);
 	console.error('Usage:');
 	console.error('  geocute geo1 key1 geo2 key2 [pointlist] output');
 	console.error('    - geo1: filename of source GeoJSON');
@@ -67,14 +68,10 @@ var lookup1 = geo1.getLookup(true);
 console.log('generate lookups "'+filename2+'"');
 var lookup2 = geo2.getLookup(true);
 
-
-
-console.log('fire points');
-
 var misses = [], sum = 0;
 var hits = new Map();
 var count = points.getLength();
-var bar = new ProgressBar('   [:bar] :percent (ETA :etas)', { total:50 });
+var bar = new ProgressBar('fire points [:bar] :percent (ETA :etas)', { total:50 });
 
 points.forEach((p,i) => {
 	if (i % 100000 === 0) bar.update(i/count);
@@ -97,7 +94,7 @@ points.forEach((p,i) => {
 }, () => {
 	bar.update(1);
 
-	console.log('\n');
+	console.log('');
 
 	console.log('analyse results');
 	
@@ -143,7 +140,7 @@ points.forEach((p,i) => {
 	console.log('   - in geo 2: '     +missSum2 +' ('+(100*missSum2 /sum).toFixed(3)+'%)');
 	console.log('   - in geo 1 or 2: '+missSum12+' ('+(100*missSum12/sum).toFixed(3)+'%)');
 	if (misses.length > 0) {
-		console.log('   - saving all misses as "_misses.geojson"');
+		console.log('   - saving all misses as "_misses.geojson"'.yellow);
 		fs.writeFileSync('_misses.geojson', JSON.stringify({type:'FeatureCollection',features:misses}), 'utf8')
 	}
 
@@ -153,7 +150,8 @@ points.forEach((p,i) => {
 	console.log('   - in geo 1: '+features1.length);
 
 	if (features1.length) {
-		console.warn('Warning: Some regions in geo 1 where not hit');
+		console.warn('Warning: Some regions in geo 1 where not hit'.yellow);
+		console.warn('Solution: Estimate matrix entries based on overlapping areas.'.yellow);
 		var findOverlaps = geo2.getOverlapFinder();
 		features1.forEach(f1 => {
 			findOverlaps(f1).forEach(overlap => hits.push({
@@ -169,7 +167,8 @@ points.forEach((p,i) => {
 
 	console.log('   - in geo 2: '+features2.length);
 	if (features2.length) {
-		console.log('CAN\'T FIX IT, THAT THERE IS NO HITS IN GEO2!!')
+		console.log('ERROR: CAN\'T FIX IT, THAT THERE IS NO HITS IN GEO2!!'.red);
+		console.log('SOLUTION: PANIC!'.red);
 		console.log('   - saving that as "_nohits.geojson"');
 		fs.writeFileSync('_nohits.geojson', JSON.stringify({type:'FeatureCollection',features:features2}), 'utf8');
 	}
@@ -189,4 +188,6 @@ points.forEach((p,i) => {
 	hits.unshift('key1_'+key1+'\tkey2_'+key2+'\tfraction\tresidents\terror\tmethod');
 
 	fs.writeFileSync(filenameOut, hits.join('\n'), 'utf8')
+
+	console.log('');
 })

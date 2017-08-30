@@ -99,13 +99,28 @@ points.forEach((p,i) => {
 
 	console.log('\n');
 
-	console.log('save results');
-
+	console.log('analyse results');
+	
 	hits = Array.from(hits.values());
 	hits.forEach(hit => {
 		hit.r1.properties._count = (hit.r1.properties._count || 0) + hit.v;
 		hit.r2.properties._count = (hit.r2.properties._count || 0) + hit.v;
 	})
+	hits = hits.map(hit => {
+		var fraction = hit.v/hit.r1.properties._count;
+		var error = fraction*(1-fraction);
+		error = error*hit.v/hit.r2.properties._count;
+		return {
+			key1: hit.r1.properties[key1],
+			key2: hit.r2.properties[key2],
+			fraction: fraction,
+			residents: hit.v,
+			error: error,
+			measurement: 'point'
+		}
+	})
+
+
 
 	var missSum1 = 0, missSum2 = 0, missSum12 = 0;
 	misses = misses.map(p => {
@@ -122,29 +137,50 @@ points.forEach((p,i) => {
 			}
 		}
 	})
-	
+
 	console.log('- misses:');
-	console.log('   - in geo 1: '     +(100*missSum1 /sum).toFixed(3)+'%');
-	console.log('   - in geo 2: '     +(100*missSum2 /sum).toFixed(3)+'%');
-	console.log('   - in geo 1 or 2: '+(100*missSum12/sum).toFixed(3)+'%');
+	console.log('   - in geo 1: '     +missSum1 +' ('+(100*missSum1 /sum).toFixed(3)+'%)');
+	console.log('   - in geo 2: '     +missSum2 +' ('+(100*missSum2 /sum).toFixed(3)+'%)');
+	console.log('   - in geo 1 or 2: '+missSum12+' ('+(100*missSum12/sum).toFixed(3)+'%)');
 	if (misses.length > 0) {
 		console.log('   - saving all misses as "_misses.geojson"');
 		fs.writeFileSync('_misses.geojson', JSON.stringify({type:'FeatureCollection',features:misses}), 'utf8')
 	}
 
-	hits = hits.map(hit => {
-		var fraction = hit.v/hit.r1.properties._count;
-		var error = fraction*(1-fraction);
-		error = error*hit.v/hit.r2.properties._count;
-		return [
-			hit.r1.properties[key1],
-			hit.r2.properties[key2],
-			fraction.toFixed(6),
-			hit.v.toFixed(1),
-			error.toFixed(6)
-		].join('\t')
-	})
-	hits.unshift('key1_'+key1+'\tkey2_'+key2+'\tfraction\tresidents\terror');
+	console.log('- regions without hits:');
+	var features1 = geo1.features.filter(f => (!f.properties._count))
+	var features2 = geo2.features.filter(f => (!f.properties._count))
+	console.log('   - in geo 1: '+features1.length);
+	console.log('   - in geo 2: '+features2.length);
+
+	if (features1.length) {
+		var findOverlaps = geo2.getOverlapFinder();
+		features1.forEach(f1 => {
+			findOverlaps(f1).forEach(overlap => hits.push({
+				key1: f1.properties[key1],
+				key2: overlap.feature.properties[key2],
+				fraction: overlap.fraction,
+				residents: 0,
+				error: 1,
+				measurement: 'overlapping area'
+			}))
+		})
+	}
+	if (features2.length) console.log('CAN\'T FIX IT, THAT THERE IS NO HITS IN GEO2!!')
+
+
+
+
+	console.log('save results');
+	hits = hits.map(hit => [
+		hit.key1,
+		hit.key2,
+		hit.fraction.toFixed(6),
+		hit.residents.toFixed(1),
+		hit.error.toFixed(6),
+		hit.measurement
+	].join('\t'))
+	hits.unshift('key1_'+key1+'\tkey2_'+key2+'\tfraction\tresidents\terror\tmeasurement');
 
 	fs.writeFileSync(filenameOut, hits.join('\n'), 'utf8')
 })

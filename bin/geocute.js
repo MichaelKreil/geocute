@@ -151,9 +151,9 @@ points.forEach((p,i) => {
 	var features1 = geo1.features.filter(f => (!f.properties._count))
 	var features2 = geo2.features.filter(f => (!f.properties._count))
 	console.log('   - in geo 1: '+features1.length);
-	console.log('   - in geo 2: '+features2.length);
 
 	if (features1.length) {
+		console.warn('Warning: Some regions in geo 1 where not hit');
 		var findOverlaps = geo2.getOverlapFinder();
 		features1.forEach(f1 => {
 			findOverlaps(f1).forEach(overlap => hits.push({
@@ -166,6 +166,8 @@ points.forEach((p,i) => {
 			}))
 		})
 	}
+
+	console.log('   - in geo 2: '+features2.length);
 	if (features2.length) {
 		console.log('CAN\'T FIX IT, THAT THERE IS NO HITS IN GEO2!!')
 		console.log('   - saving that as "_nohits.geojson"');

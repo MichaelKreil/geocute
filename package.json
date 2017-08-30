@@ -11,11 +11,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@turf/bbox-clip": "^4.4.0",
-    "@turf/flatten": "^4.4.0",
+    "@turf/turf": "^4.6.1",
     "async": "^2.4.1",
     "progress": "^2.0.0",
-    "progress-stream": "^2.0.0",
-    "turf": "^3.0.14"
+    "progress-stream": "^2.0.0"
   }
 }

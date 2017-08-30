@@ -71,7 +71,7 @@ var lookup2 = geo2.getLookup(true);
 
 console.log('fire points');
 
-var missSum1 = 0, missSum2 = 0, sum = 0, ignoredSum = 0;
+var misses = [], sum = 0;
 var hits = new Map();
 var count = points.getLength();
 var bar = new ProgressBar('   [:bar] :percent (ETA :etas)', { total:50 });
@@ -83,9 +83,12 @@ points.forEach((p,i) => {
 	var region2 = lookup2(p.x, p.y);
 
 	sum += p.v;
-	if (!region1) missSum1 += p.v;
-	if (!region2) missSum2 += p.v;
-	if (!region1 || !region2) return;
+	if (!region1 || !region2) {
+		p.region1 = region1;
+		p.region2 = region2;
+		misses.push(p);
+		return;
+	}
 
 	var key = region1.properties._index+'_'+region2.properties._index;
 	if (!hits.has(key)) hits.set(key, {r1:region1, r2:region2, v:0});
@@ -99,20 +102,35 @@ points.forEach((p,i) => {
 	console.log('save results');
 
 	hits = Array.from(hits.values());
-	hits = hits.filter(hit => {
-		if (hit.v < minResidents) {
-			ignoredSum += hit.v;
-			return false;
-		}
+	hits.forEach(hit => {
 		hit.r1.properties._count = (hit.r1.properties._count || 0) + hit.v;
 		hit.r2.properties._count = (hit.r2.properties._count || 0) + hit.v;
-
-		return true;
 	})
 
-	console.log('- misses in geo 1: '+(100*missSum1/sum).toFixed(3)+'%');
-	console.log('- misses in geo 2: '+(100*missSum2/sum).toFixed(3)+'%');
-	console.log('- ignored residents: '+(100*missSum2/sum).toFixed(3)+'%');
+	var missSum1 = 0, missSum2 = 0, missSum12 = 0;
+	misses = misses.map(p => {
+		if (!p.region1) missSum1 += p.v;
+		if (!p.region2) missSum2 += p.v;
+		if (!p.region1 || !p.region2) missSum12 += p.v;
+		return {
+			type: 'Feature',
+			geometry: { type: 'Point', coordinates: [p.x, p.y] },
+			properties: {
+				residents: p.v,
+				region1: p.region1 ? ''+p.region1.properties[key1] : 'false',
+				region2: p.region2 ? ''+p.region2.properties[key2] : 'false'
+			}
+		}
+	})
+	
+	console.log('- misses:');
+	console.log('   - in geo 1: '     +(100*missSum1 /sum).toFixed(3)+'%');
+	console.log('   - in geo 2: '     +(100*missSum2 /sum).toFixed(3)+'%');
+	console.log('   - in geo 1 or 2: '+(100*missSum12/sum).toFixed(3)+'%');
+	if (misses.length > 0) {
+		console.log('   - saving all misses as "_misses.geojson"');
+		fs.writeFileSync('_misses.geojson', JSON.stringify({type:'FeatureCollection',features:misses}), 'utf8')
+	}
 
 	hits = hits.map(hit => {
 		var fraction = hit.v/hit.r1.properties._count;

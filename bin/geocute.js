@@ -150,7 +150,8 @@ points.forEach((p,i) => {
 	console.log('   - in geo 1: '+features1.length);
 
 	if (features1.length) {
-		console.warn('Warning: Some regions in geo 1 where not hit'.yellow);
+		console.warn('Warning: Some regions in geo 1 where not hit:'.yellow);
+		console.warn(colors.yellow(features1.map(f => f.properties[key1]).join(',')));
 		console.warn('Solution: Estimate matrix entries based on overlapping areas.'.yellow);
 		var findOverlaps = geo2.getOverlapFinder();
 		features1.forEach(f1 => {

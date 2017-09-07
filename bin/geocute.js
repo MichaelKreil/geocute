@@ -170,6 +170,7 @@ points.forEach((p,i) => {
 			}))
 		})
 		if (noOverlaps.length > 0) {
+			console.warn(('Saving non overlapping regions as _nooverlaps.geojson').red);
 			fs.writeFileSync('_nooverlaps.geojson', JSON.stringify({type:'FeatureCollection',features:noOverlaps}), 'utf8');
 		}
 	}

@@ -154,8 +154,13 @@ points.forEach((p,i) => {
 		console.warn(colors.yellow(features1.map(f => f.properties[key1]).join(',')));
 		console.warn('Solution: Estimate matrix entries based on overlapping areas.'.yellow);
 		var findOverlaps = geo2.getOverlapFinder();
-		features1.forEach(f1 => {
-			findOverlaps(f1).forEach(overlap => hits.push({
+		var noOverlaps = features1.filter(f1 => {
+			var overlaps = findOverlaps(f1);
+			if (overlaps.length === 0) {
+				console.warn(('Error: Can not find overlaps for '+f1.properties[key1]+' in geo2').red);
+				return true;
+			}
+			overlaps.forEach(overlap => hits.push({
 				key1: f1.properties[key1],
 				key2: overlap.feature.properties[key2],
 				fraction: overlap.fraction,
@@ -164,6 +169,9 @@ points.forEach((p,i) => {
 				method: 'overlapping area'
 			}))
 		})
+		if (noOverlaps.length > 0) {
+			fs.writeFileSync('_nooverlaps.geojson', JSON.stringify({type:'FeatureCollection',features:noOverlaps}), 'utf8');
+		}
 	}
 
 	console.log('   - in geo 2: '+features2.length);

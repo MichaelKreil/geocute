@@ -1,5 +1,2 @@
 
-*.geojson
-*.tsv
-*.tsv.gz
-/node_modules/
+/node_modules

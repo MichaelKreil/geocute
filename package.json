@@ -1,14 +1,15 @@
 {
+  "private": true,
   "name": "geocute",
   "version": "1.0.0",
   "description": "GEO Conversion Using Telephone book Entries",
   "bin": {
     "geocute": "bin/geocute.js"
   },
-  "author": {
-    "name": "Michael Kreil",
-    "url": "http://dsst.io"
-  },
+  "contributors": [
+    "Michael Kreil (https://michael-kreil.de/)",
+    "Sebastian Vollnhals <geocute@yetzt.me>"
+  ],
   "license": "MIT",
   "dependencies": {
     "@turf/turf": "^5.1.6",

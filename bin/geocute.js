@@ -48,7 +48,7 @@ if (args.length > 1) pointListFilename = args.shift();
 
 var filenameOut = args.shift();
 
-ffd(pointListFilename, [process.cwd(), __dirname, path.resolve(__dirname,"../data")], function(pointListFilename){
+ffd(pointListFilename, [process.cwd(), __dirname, Path.resolve(__dirname,"../data")], function(pointListFilename){
 	if (pointListFilename === null) return console.error("Unable to find PointList '%s'", pointListFilename);
 
 	console.log('load points');

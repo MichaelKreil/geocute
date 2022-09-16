@@ -14,7 +14,7 @@
   "dependencies": {
     "@turf/turf": "^5.1.6",
     "async": "^2.6.4",
-    "colors": "^1.1.2",
+    "colrz": "^0.0.3",
     "ffd": "^0.0.1",
     "progress": "^2.0.0",
     "progress-stream": "^2.0.0"

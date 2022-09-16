@@ -17,7 +17,7 @@ async.series([
 function loadGermanyPoints(cb) {
 	console.log('\nload deutschland_points.tsv');
 	tsv.load(
-		'sources/deutschland_points.tsv.br',
+		__dirname+'/sources/deutschland_points.tsv.br',
 		['float', 'float'],
 		point => {
 			pointLookup.add(point[0], point[1], 0)
@@ -30,7 +30,7 @@ function loadCensusGrid(cb) {
 	console.log('\nload zensus_grid.tsv');
 
 	tsv.load(
-		'sources/zensus_grid.tsv.br',
+		__dirname+'/sources/zensus_grid.tsv.br',
 		['float', 'float', 'integer'], // lon, lat, value?
 		gridPoint => {
 			var points = pointLookup.findNearby(gridPoint[0], gridPoint[1], 300);
@@ -58,7 +58,7 @@ function saveData() {
 
 	lonelyGridPoints.forEach(point => pointLookup.add(point[0], point[1], point[2]));
 
-	pointLookup.save('deutschland-only.bin.br');
+	pointLookup.save(__dirname+'/deutschland-only.bin.br');
 
 	console.log('finished');
 }

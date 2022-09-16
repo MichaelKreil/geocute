@@ -23,6 +23,7 @@ npm link
   - `../data/deutschland-only.bin.br`: based on 2011 zensus data and ldbv adress coordinates (2011)
   - `../data/berlin_blk.bin.br`: Berlin only, based on "statistische Blöcke" (2019)
   - `../data/berlin_adr_ew.bin.br`: Berlin only, based on "Sonderauswertung RBS-Adressen" (2016)
+  - `../data/deutschland_berlin_blk.bin.br`: Combined `berlin_blk.bin` for Berlin and `deutschland.bin` for all other states.
 - `output`: filename of resulting TSV file
 
 ## Example

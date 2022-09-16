@@ -4,7 +4,7 @@
 ## Installation
 
 ```
-git clone git@git.dsst.io:btw17/geocute.git
+git clone git@github.com:MichaelKreil/geocute.git
 cd geocute
 npm install
 npm link

@@ -4,8 +4,8 @@
 
 const fs = require('fs');
 const ffd = require('ffd');
-const Path = require('path');
 const colors = require('colors');
+const path = require('path');
 const ProgressBar = require('progress');
 const PointList = require('../lib/point_list.js');
 const RegionLookup = require('../lib/region_lookup.js');
@@ -43,8 +43,8 @@ const key2        = args.shift();
 const pointListFilenameArg = (args.length > 1) ? args.shift() : '../data/deutschland.bin.br'
 const filenameOut = args.shift();
 
-ffd(pointListFilenameArg, [process.cwd(), __dirname, Path.resolve(__dirname,"../data")], function(pointListFilename){
 	if (pointListFilename === null) return console.error("Unable to find PointList '%s'", pointListFilename);
+ffd(pointListFilenameArg, [ process.cwd(), __dirname, path.resolve(__dirname,"../data") ], function(pointListFilename){
 
 	console.log('load points');
 	const points = PointList.load(pointListFilename);

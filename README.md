@@ -19,9 +19,10 @@ npm link
 - `geo2`: filename of target GeoJSON
 - `key2`: property name of the key in target GeoJSON
 - `pointlist`: (optional) name of list of points to through at the data. Can be:
-  - `../data/deutschland.bin.gz`: (default) based on telephone book entries
-  - `../data/berlin_blk.bin.gz`: Berlin only, based on "statistische Blöcke"
-  - `../data/berlin_adr_ew.bin.gz`: Berlin only, based on "Sonderauswertung RBS-Adressen"
+  - `../data/deutschland.bin.br`: (default) based on telephone book entries (?)
+  - `../data/deutschland-only.bin.br`: based on 2011 zensus data and ldbv adress coordinates (2011)
+  - `../data/berlin_blk.bin.br`: Berlin only, based on "statistische Blöcke" (2019)
+  - `../data/berlin_adr_ew.bin.br`: Berlin only, based on "Sonderauswertung RBS-Adressen" (2016)
 - `output`: filename of resulting TSV file
 
 ## Example

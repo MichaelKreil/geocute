@@ -41,3 +41,5 @@ This is exactly where GeoCUTE comes in:
 GeoCUTE contains a database with the addresses of telephone subscribers as geo-coordinates (in Germany, as of sometime between 2010 ~ 2015). The first step for each of these geo-coordinates is to calculate in which postcode area or municipality they are located. If there are 1000 of these coordinates in postcode area X, and 300 of these 1000 are also in municipality Y, then GeoCUTE assumes that 30% of the insolvencies in postcode area X fall in municipality Y.
 
 GeoCUTE therefore calculates for each known address point in which region of spatial reference A and in which region of spatial reference B the point is located, and can use this to calculate a conversion matrix to convert from spatial reference A to spatial reference B.
+
+In order to increase the quality even further, we added a weight to every address point: We estimated the number of inhabitants per address on the basis of the ["population statistic in a 100m grid"](https://www.zensus2011.de/DE/Home/Aktuelles/DemografischeGrunddaten.html).

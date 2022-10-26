@@ -1,8 +1,5 @@
 "use strict"
 
-console.log("missing source data.");
-process.exit();
-
 const tsv = require('../lib/tsv.js');
 const async = require('async');
 

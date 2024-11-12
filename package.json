@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "geocute",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GEO Conversion Using Telephone book Entries",
   "bin": {
     "geocute": "bin/geocute.js"
@@ -14,7 +14,7 @@
   "dependencies": {
     "@turf/turf": "^5.1.6",
     "async": "^2.6.4",
-    "colrz": "^0.0.3",
+    "colrz": "^0.0.5",
     "ffd": "^0.0.1",
     "progress": "^2.0.0",
     "progress-stream": "^2.0.0"

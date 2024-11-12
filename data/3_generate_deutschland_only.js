@@ -27,10 +27,10 @@ function loadGermanyPoints(cb) {
 };
 
 function loadCensusGrid(cb) {
-	console.log('\nload zensus_grid.tsv');
+	console.log('\nload zensus_grid_2011.tsv');
 
 	tsv.load(
-		__dirname+'/sources/zensus_grid.tsv.br',
+		__dirname+'/sources/zensus_grid_2011.tsv.br',
 		['float', 'float', 'integer'], // lon, lat, value?
 		gridPoint => {
 			const points = pointLookup.findNearby(gridPoint[0], gridPoint[1], 300);
